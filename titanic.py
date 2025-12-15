@@ -23,3 +23,13 @@ from load_data import load_data
 #TODO 3:
 
 
+ships = load_data()["data"]
+
+
+def get_all_countries(all_data):
+	"""Get valid countries by guarding against empty countries in  ships data """
+	return [ship["COUNTRY"] for ship in ships if ship.get("COUNTRY")]
+
+
+def show_countries(all_data):
+
