@@ -32,4 +32,8 @@ def get_all_countries(all_data):
 
 
 def show_countries(all_data):
+	"""Display countries in alphabetical order and remove any duplicates"""
+	countries = sorted(set(get_all_countries(all_data)))
 
+	for country in countries:
+		print(country)
