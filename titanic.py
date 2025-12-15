@@ -37,3 +37,24 @@ def show_countries(all_data):
 
 	for country in countries:
 		print(country)
+
+
+def top_countries(all_data, num_countries):
+	country_counts = {}
+
+	for country in get_all_countries(all_data):
+		if country in country_counts:
+			country_counts[country] += 1
+		else:
+			country_counts[country] = 1
+		#country_counts[country] = country_counts.get(country, 0) + 1
+
+	sorted_countries = sorted(
+		country_counts.items(),
+		key=lambda item: item[1],
+		reverse=True
+	)
+
+	for country, count in sorted_countries[:num_countries]:
+		print(f"{country}: {count}")
+
