@@ -1,20 +1,25 @@
 from load_data import load_data
 
-all_data = load_data()
-ships = all_data["data"]
+#TODO 1: Summary of program
+# * Keep reading commands from the user
+# * Parse the command
+# * Call the right function
+# * Print the result
+# * Loop until the user exist (Ctrl + C)
 
-no_of_ships = ships
-print(f"Number of ships are:", len(no_of_ships) )
+#TODO 2: Commands the program supports
+#   Help:
+#   *   Print available commands
+#   show_countries
+#   *   Extract all ship countries
+#   *   Remove duplicates
+#   *   Sort alphabetically
+#   *   Print one per line
+#   top_countries <num>
+#   *   Count ships per country
+#   *   Sort by count (descending)
+#   *   Print the top <num> countries with counts
 
+#TODO 3:
 
-
-
-names_of_all_ships = [ship.get("SHIPNAME") for ship in ships]
-names_of_all_ships_country = [ship.get("COUNTRY") for ship in ships]
-print(names_of_all_ships)
-print(names_of_all_ships_country)
-print(len(names_of_all_ships))
-
-countries_without_duplicate = set(ship.get("COUNTRY") for ship in ships if ship.get("COUNTRY"))
-print(f"Sorted Country Names are:", sorted(countries_without_duplicate))
 
