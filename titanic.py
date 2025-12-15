@@ -58,3 +58,48 @@ def top_countries(all_data, num_countries):
 	for country, count in sorted_countries[:num_countries]:
 		print(f"{country}: {count}")
 
+
+def print_help():
+	print("Available commands:")
+	print(" help")
+	print(" show_countries")
+	print(" top_countries <num_countries>")
+
+
+def run_cli(all_data):
+	print("Welcome to the Ships CLI. Type 'help' for commands.")
+
+	while True:
+		try:
+			user_input = input("> ").strip()
+			parts = user_input.split()
+
+			if not parts:
+				continue
+
+			command = parts[0]
+
+			if command == "help":
+				print_help()
+
+			elif command== "show_countries":
+				show_countries(all_data)
+
+			elif command == "top_countries":
+				if len(parts) != 2 or not parts[1].isdigit():
+					print("Usage: top_countries <num_countries>")
+					continue
+
+				num_countries = int(parts[1])
+				top_countries(all_data, num_countries)
+
+			else:
+				print("Unknown command. Type 'help'.")
+
+		except KeyboardInterrupt:
+			print("\nExisting CLI.")
+			break
+
+
+if __name__ =="__main__":
+	run_cli(ships)
