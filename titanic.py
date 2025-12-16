@@ -200,6 +200,60 @@ COMMANDS = {
 }
 
 
+def get_lat_lon(ship):
+	"""Return (lat, lon) as float or (None, None) if invalid."""
+	try:
+
+		lat = float(ship.get("LAT"))
+		lon = float(ship.get("LON"))
+	except (TypeError, ValueError):
+		return None, None
+
+	if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+		return None, None
+
+	return lat, lon
+
+
+def draw_map(all_data, output_file="ships_map.png"):
+	"""
+	Draw ship positions on a latitude/longitude map
+	and save the result to a PNG file.
+	"""
+	import matplotlib.pyplot as plt
+
+	latitudes = []
+	longitudes = []
+
+	for ship in all_data:
+		lat, lon = get_lat_lon(ship)
+		if lat is not None and lon is not None:
+			latitudes.append(lat)
+			longitudes.append(lon)
+
+	if not latitudes:
+		print("No valid ship locations found.")
+		return
+
+	plt.figure(figsize=(12, 6))
+	plt.title("Ship Positions")
+	plt.xlabel("Longitude")
+	plt.ylabel("Latitude")
+
+	plt.xlim(-180, 180)
+	plt.ylim(-90, 90)
+	plt.grid(True)
+
+	# longitude on X-axis, latitude on Y-axis
+	plt.scatter(longitudes, latitudes, s=10)
+
+	plt.tight_layout()
+	plt.savefig(output_file, dpi=200)
+	plt.close()
+
+	print(f"Map saved as '{output_file}'")
+
+
 # ----------------------------
 # Main CLI loop
 # ----------------------------
@@ -255,6 +309,6 @@ def main():
 
 
 if __name__ == "__main__":
-	main()
+	print(ships[0].keys())
 
 
