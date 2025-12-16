@@ -122,7 +122,7 @@ def top_countries_cmd(all_data, args):
 		print(f"{country}: {count}")
 
 
-def unknown_cmd(all_data, ards):
+def unknown_cmd(all_data, args):
 	"""
 	Fallback handler when the user types an unknown command.
 	"""
@@ -155,7 +155,7 @@ def search_ship(all_data, args):
 		return
 
 	for ship in matches:
-		print(ship.get("SHIPNAME", "(no name"))
+		print(ship.get("SHIPNAME", "(no name)"))
 
 
 def speed_histogram(all_data, args=None):
@@ -235,7 +235,7 @@ def run_cli(all_data):
 
 			# Handle existing the loop (not part of dispatch)
 			if command == "exit":
-				print("Existing CLI")
+				print("Exiting CLI")
 				break
 
 			# Dispatcher lookup: get the handler function
@@ -255,7 +255,6 @@ def main():
 
 
 if __name__ == "__main__":
-	#run_cli(ships)
-	search_ship("disney", 1)
+	main()
 
 
