@@ -1,5 +1,8 @@
 from load_data import load_data
+from collections import Counter
+
 import sys
+
 
 #TODO 1: Summary of program
 # * Keep reading commands from the user
@@ -136,6 +139,14 @@ COMMANDS = {
 }
 
 
+def ships_by_types(all_data, args=None):
+	types = [ship.get("TYPE_SUMMARY") for ship in all_data if ship.get("TYPE_SUMMARY")]
+	counts = Counter(types)
+
+	for ship_type, count in counts.most_common():
+		print(f"{ship_type}: {count}")
+
+
 # ----------------------------
 # Main CLI loop
 # ----------------------------
@@ -185,6 +196,7 @@ def run_cli(all_data):
 		sys.exit(0)
 
 
-
 if __name__ == "__main__":
 	run_cli(ships)
+
+
