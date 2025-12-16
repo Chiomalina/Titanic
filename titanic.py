@@ -1,5 +1,6 @@
 from load_data import load_data
 from collections import Counter
+import matplotlib.pyplot as plt
 
 import sys
 
@@ -128,16 +129,6 @@ def unknown_cmd(all_data, ards):
 	print("Unknown command. Type 'help' to see available commands.")
 
 
-# ----------------------------
-# Dispatcher dictionary (function pointers)
-# ----------------------------
-COMMANDS = {
-	"help": help_cmd,
-	"show_countries": show_countries_cmd,
-	"top_countries": top_countries_cmd,
-	# NOTE: "exit" is handled in run_cli because it breaks the loop.
-}
-
 
 def ships_by_types(all_data, args=None):
 	types = [ship.get("TYPE_SUMMARY") for ship in all_data if ship.get("TYPE_SUMMARY")]
@@ -145,6 +136,68 @@ def ships_by_types(all_data, args=None):
 
 	for ship_type, count in counts.most_common():
 		print(f"{ship_type}: {count}")
+
+
+def search_ship(all_data, args):
+	if not args:
+		print("Usage: search_ship <partial_name>")
+		return
+
+	query = " ".join(args).strip().lower()
+
+	matches = [
+		ship for ship in all_data
+		if query in (ship.get("SHIPNAME") or "").lower()
+	]
+
+	if not matches:
+		print("No ships found.")
+		return
+
+	for ship in matches:
+		print(ship.get("SHIPNAME", "(no name"))
+
+
+def speed_histogram(all_data, args=None):
+	speeds = []
+	for ship in all_data:
+		raw_speed = ship.get("SPEED")
+		if raw_speed in (None, ""):
+			continue
+		try:
+			speeds.append(float(raw_speed))
+		except ValueError:
+			continue
+
+	if not speeds:
+		print("No valid speed data found.")
+		return
+
+	plt.figure()
+	plt.hist(speeds, bins=20)
+	plt.title("Ship Speed Histogram")
+	plt.xlabel("Speed")
+	plt.ylabel("Number of ships")
+
+	filename = "speed_histogram.png"
+	plt.savefig(filename)
+	plt.close()
+	print(f"Saved histogram to {filename}")
+
+
+# ----------------------------
+# Dispatcher dictionary (function pointers)
+# ----------------------------
+COMMANDS = {
+	"help": help_cmd,
+	"show_countries": show_countries_cmd,
+	"top_countries": top_countries_cmd,
+	"ships_by_types": ships_by_types,
+    "search_ship": search_ship,
+    "speed_histogram": speed_histogram,
+
+	# NOTE: "exit" is handled in run_cli because it breaks the loop.
+}
 
 
 # ----------------------------
@@ -196,7 +249,13 @@ def run_cli(all_data):
 		sys.exit(0)
 
 
+def main():
+	all_data = load_data()["data"]
+	run_cli(all_data)
+
+
 if __name__ == "__main__":
-	run_cli(ships)
+	#run_cli(ships)
+	search_ship("disney", 1)
 
 
